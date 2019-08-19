@@ -24,21 +24,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PinViewModel extends ViewModel {
 
     public static final String MARKER_IMAGE = "marker-15";
-
     public static final String BASE_URL = "https://annetog.gotenna.com/development/scripts/";
-
     public static final String ACCESS_CODE = "mapbox://styles/mapbox/cjerxnqt3cgvp2rmyuxbeqme7";
 
-    public ArrayList<Pin> pinArrayList = new ArrayList();
-    public Map<Symbol, Pin> symbolMap = new HashMap<>();
+    private ArrayList<Pin> pinArrayList = new ArrayList<>();
+    private Map<Symbol, Pin> symbolMap = new HashMap<>();
+    private MutableLiveData<List<Pin>> pins = new MutableLiveData<>();
 
+//    public ArrayList<Pin> getPinArrayList() {
+//        return pinArrayList;
+//    }
 
-    private MutableLiveData<List<Pin>> pins;
+    public Map<Symbol, Pin> getSymbolMap() {
+        return symbolMap;
+    }
 
     public LiveData<List<Pin>> getPins() {
-        if (pins == null) {
-            pins = new MutableLiveData<>();
-        }
         return pins;
     }
 
@@ -50,7 +51,7 @@ public class PinViewModel extends ViewModel {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
-
+        // Ideally inject REST service //
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))

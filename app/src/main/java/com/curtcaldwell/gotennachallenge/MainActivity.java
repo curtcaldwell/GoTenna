@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements
 
         model = ViewModelProviders.of(this).get(PinViewModel.class);
         model.getPins().observe(this, pins -> {
-            model.pinArrayList.addAll(pins);
+//            model.getPinArrayList().addAll(pins);
             mapView.getMapAsync(MainActivity.this);
             adapter.updateList(pins);
         });
@@ -75,34 +75,37 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         MainActivity.this.mapboxMap = mapboxMap;
-        mapboxMap.setStyle(new Style.Builder().fromUri(PinViewModel.ACCESS_CODE),
-                style -> {
-                    enableLocationComponent(style);
-                    symbolManager = new SymbolManager(mapView, mapboxMap, style);
-                    symbolManager.setIconAllowOverlap(true);
-                    symbolManager.setTextAllowOverlap(true);
+        model.getPins().observe(this, pins -> {
+            mapboxMap.setStyle(new Style.Builder().fromUri(PinViewModel.ACCESS_CODE),
+                    style -> {
+                        enableLocationComponent(style);
+                        symbolManager = new SymbolManager(mapView, mapboxMap, style);
+                        symbolManager.setIconAllowOverlap(true);
+                        symbolManager.setTextAllowOverlap(true);
 
-                    for (int i = 0; i < model.pinArrayList.size(); i++) {
-                        symbol = symbolManager.create(new SymbolOptions()
-                                .withLatLng(new LatLng(model.pinArrayList.get(i).getLatitude(), model.pinArrayList.get(i).getLongitude()))
-                                .withIconImage(PinViewModel.MARKER_IMAGE)
-                                .withIconSize(2.0f)
+                        for (int i = 0; i < pins.size(); i++) {
+                            symbol = symbolManager.create(new SymbolOptions()
+                                    .withLatLng(new LatLng(pins.get(i).getLatitude(), pins.get(i).getLongitude()))
+                                    .withIconImage(PinViewModel.MARKER_IMAGE)
+                                    .withIconSize(2.0f)
 
-                        );
-                        model.symbolMap.put(symbol, model.pinArrayList.get(i));
-                    }
-
-                    symbolManager.addClickListener(symbol -> {
-                        TextView mapDataName = findViewById(R.id.pin_data_name);
-                        TextView mapDataDescription = findViewById(R.id.pin_data_description);
-                        if (model.symbolMap.get(symbol) != null &&  model.symbolMap.get(symbol).getName() != null && model.symbolMap.get(symbol).getDescription() != null) {
-                            mapDataName.setText(model.symbolMap.get(symbol).getName());
-                            mapDataDescription.setText(model.symbolMap.get(symbol).getDescription());
-                            mapDataName.setVisibility(View.VISIBLE);
-                            mapDataDescription.setVisibility(View.VISIBLE);
+                            );
+                            model.getSymbolMap().put(symbol, pins.get(i));
                         }
+
+                        symbolManager.addClickListener(symbol -> {
+                            TextView mapDataName = findViewById(R.id.pin_data_name);
+                            TextView mapDataDescription = findViewById(R.id.pin_data_description);
+                            if (model.getSymbolMap().get(symbol) != null && model.getSymbolMap().get(symbol).getName() != null && model.getSymbolMap().get(symbol).getDescription() != null) {
+                                mapDataName.setText(model.getSymbolMap().get(symbol).getName());
+                                mapDataDescription.setText(model.getSymbolMap().get(symbol).getDescription());
+                                mapDataName.setVisibility(View.VISIBLE);
+                                mapDataDescription.setVisibility(View.VISIBLE);
+                            }
+                        });
                     });
-                });
+        } );
+
 
     }
 
