@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GoTennaChallenge</string>
+    <string name="access_token">pk.eyJ1IjoiY2NhbGR3ZWxsMjQiLCJhIjoiY2p6YnBnbW11MDFzaDNucDQ2d2xycWV6dyJ9.wqLuMjTeKoFMICr_gbCuyQ</string>
+    <string name="bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="permission_not_granted">Permission not granted</string>
+    <string name="need_permission">Need permission</string>
+
+
+</resources>
