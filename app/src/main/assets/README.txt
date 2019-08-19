@@ -26,7 +26,7 @@ and understanding the MapBox library, I believe doing this project again with th
 could be done a lot faster.
 
 
-Once again, Thank you so much for this opportunity and I look forward to discussing this project more with
+Once again, thank you so much for this opportunity and I look forward to discussing this project more with
 
 you.
 
